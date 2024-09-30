@@ -1,10 +1,27 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Welcome to My Simple Django App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TryEmOn</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-    <h1>Hello, Django!</h1>
-    <p>This is a simple app displaying index.html.</p>
+    <header class="header">
+        <div class="logo">
+            <a href="#">TryEmOn: Virtual Fashion Booster</a>
+        </div>
+    </header>
+    <!-- <h1>Hello, Django!</h1>
+    <p>This is a simple app displaying index.html.</p> -->
+    <div class="container">
+        <img src="{% static 'images/none.jpg' %}" alt="My Image">
+        <img src="{% static 'images/jacket.png' %}" alt="My Image">
+        <img src="{% static 'images/arrow.jpg' %}" alt="My Image">
+        <img src="{% static 'images/sweater.jpg' %}" alt="My Image">
+    </div>
+    <script src="{% static 'js/scripts.js' %}"></script>
 </body>
 </html>
