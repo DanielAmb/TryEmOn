@@ -1,6 +1,6 @@
-{% load static %}
+<!-- {% load static %} -->
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -14,8 +14,8 @@
             <a href="#">TryEmOn: Virtual Fashion Booster</a>
         </div>
     </header>
-    <!-- <h1>Hello, Django!</h1>
-    <p>This is a simple app displaying index.html.</p> -->
+    <h1>Hello, Django!</h1>
+    <p>This is a simple app displaying index.html.</p>
     <div class="container">
         <img src="{% static 'images/none.jpg' %}" alt="My Image">
         <img src="{% static 'images/jacket.png' %}" alt="My Image">
@@ -23,5 +23,45 @@
         <img src="{% static 'images/sweater.jpg' %}" alt="My Image">
     </div>
     <script src="{% static 'js/scripts.js' %}"></script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload</title>
+</head>
+<body>
+    <h1>Upload an Image</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="image" id="image" accept="image/*" required>
+        <button type="submit">Upload</button>
+    </form>
+    <div id="uploadedImage">
+        <h2>Uploaded Image:</h2>
+        <img id="displayImage" src="" alt="Uploaded Image" style="max-width: 300px;">
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').onsubmit = async function(event) {
+            event.preventDefault();
+            const formData = new FormData();
+            formData.append('image', document.getElementById('image').files[0]);
+
+            const response = await fetch('/myapp/upload/', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById('displayImage').src = data.image;
+            } else {
+                alert('Image upload failed');
+            }
+        };
+    </script>
 </body>
 </html>

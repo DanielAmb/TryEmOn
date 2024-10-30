@@ -1,6 +1,14 @@
+# from django.urls import path
+# from . import views
+
+# urlpatterns = [
+#     path('', views.index, name='index'),
+# ]
+
 from django.urls import path
-from . import views
+from .views import ImageUploadView, index
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', index, name='index'),
+    path('upload/', ImageUploadView.as_view(), name='image-upload'),
 ]
