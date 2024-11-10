@@ -77,7 +77,7 @@ def rate_my_fit(img):
         pred = model(img)
         outfit = []
         for results in pred:
-            box = results.boxes.numpy()
+            box = results.boxes.cpu().numpy()
             for b in box:
                 bbox = list(b.xywh[0])
                 h, w, channels = img.shape
