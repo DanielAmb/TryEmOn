@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload and Select Clothes Options</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='new_style.css') }}">
+</head>
+<body>
+    <h1>Upload and Select Your Clothes Options</h1>
+
+    <!-- Option 1 Image Upload -->
+    <form action="/upload_option1" method="post" enctype="multipart/form-data">
+        <h2>Upload Image for Option 1</h2>
+        <input type="file" name="option1_image" accept="image/*" required>
+        <button type="submit">Upload for Option 1</button>
+    </form>
+
+    <!-- Option 2 Image Upload -->
+    <form action="/upload_option2" method="post" enctype="multipart/form-data">
+        <h2>Upload Image for Option 2</h2>
+        <input type="file" name="option2_image" accept="image/*" required>
+        <button type="submit">Upload for Option 2</button>
+    </form>
+
+    <!-- Form to Select Between Uploaded Images -->
+    <form action="/select" method="post">
+        <h2>Select Your Uploaded Image</h2>
+        {% if option1_url %}
+            <label>
+                <input type="radio" name="selected_option" value="option1" required>
+                <img src="{{ option1_url }}" alt="Option 1 Image" width="150">
+                Option 1
+            </label>
+        {% endif %}
+        
+        {% if option2_url %}
+            <label>
+                <input type="radio" name="selected_option" value="option2" required>
+                <img src="{{ option2_url }}" alt="Option 2 Image" width="150">
+                Option 2
+            </label>
+        {% endif %}
+        
+        <button type="submit">Submit Selection</button>
+    </form>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
