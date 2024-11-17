@@ -177,7 +177,7 @@ def ai_rater(img):
             confidence, predicted = torch.max(probabilities, 1)
 
         rating = "Bad" if predicted.item() == 0 else "Good"
-        confidence_percentage = confidence.item() * 100
+        confidence_percentage = confidence.item() * 90
 
         return rating, confidence_percentage
 
@@ -185,50 +185,6 @@ def ai_rater(img):
     # predicted_rating, confidence = predict_rating(img)
     # print(f"Predicted Fit: {predicted_rating} with Confidence: {confidence:.2f}%")
     return predict_rating(img)
-
-
-
-
-
-
-
-
-
-    # print(os.getcwd())
-    # print(os.path.dirname(os.path.realpath(__file__)))
-    # print("\n HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH \n")
-    # transform = transforms.Compose([
-    #     transforms.Resize((128, 128)),
-    #     transforms.ToTensor(),
-    #     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-    # ])
-
-    # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    # model = models.resnet18(weights=None)
-    # model.fc = torch.nn.Linear(model.fc.in_features, 2) 
-    # model.load_state_dict(torch.load(file_path2, weights_only=True))
-    # model.to(device)
-    # model.eval() 
-
-    # import torch.nn.functional as F
-
-    # def predict_rating(img):
-    #     image = img  
-        
-    #     image = transform(image).unsqueeze(0).to(device)
-        
-    #     with torch.no_grad():
-    #         outputs = model(image)
-    #         probabilities = F.softmax(outputs, dim=1)
-    #         confidence, predicted = torch.max(probabilities, 1)
-
-    #     gender = "Bad" if predicted.item() == 0 else "Good"
-    #     confidence_percentage = confidence.item() * 100
-
-    #     return gender, confidence_percentage
-
-    # predicted_gender, confidence = predict_rating(img)
-    # print(f"Predicted Fit: {predicted_gender} with Confidence: {confidence:.2f}%")
 
 
 # BGR (opposite of RGB, opencv image format) to color name
