@@ -42,6 +42,11 @@
     <div id="uploadedImage">
         <h2>Uploaded Image:</h2>
         <img id="displayImage" src="" alt="Uploaded Image" style="max-width: 300px;">
+        <p id="uploadTime"></p>
+        <h3>Detected Items:</h3>
+        <ul id="classNames"></ul>
+        <h3>Detected Colors:</h3>
+        <ul id="colorNames"></ul>
     </div>
 
     <script>
@@ -57,9 +62,27 @@
 
             if (response.ok) {
                 const data = await response.json();
+                console.log(data);
                 document.getElementById('displayImage').src = data.image;
+                document.getElementById('uploadTime').innerText = `Uploaded at: ${new Date(data.uploaded_at).toLocaleString()}`;
+                const classNamesList = document.getElementById('classNames');
+                classNamesList.innerHTML = "";
+                data.class_names.forEach(className => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = className;
+                    classNamesList.appendChild(listItem);
+                });
+                const colorNamesList = document.getElementById('colorNames');
+                colorNamesList.innerHTML = "";
+                data.color_names.forEach(colorNames => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = colorNames;
+                    colorNamesList.appendChild(listItem);
+                });
+
+                document.getElementById('uploadedImage').style.display = 'block';
             } else {
-                alert('Image upload failed');
+                alert('Image upload failed or No clothing items detected');
             }
         };
     </script>
