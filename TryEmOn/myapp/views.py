@@ -27,7 +27,7 @@ from torchvision import transforms, models
 from PIL import Image
 
 
-file_path = os.path.join('..', 'media', 'best.pt')
+file_path = os.path.join('.', 'media', 'best.pt')
 file_path2 = os.path.join('.', 'media', 'fit_classifier128.pt')
 names = ["short-sleeve shirt", "long-sleeve shirt", "short-sleeveoutwear", "long-sleeveoutwear", "pair of shorts", "pair of pants", "skirt", "hat", "shoe"]
 model = YOLO(file_path) 
