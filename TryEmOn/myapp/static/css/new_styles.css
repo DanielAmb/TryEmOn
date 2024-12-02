@@ -1,0 +1,14 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+.clothes-options label {
+    display: inline-block;
+    margin: 10px;
+}
+.clothes-options img {
+    width: 150px;
+    height: 150px;
+    border: 2px solid #ccc;
+    cursor: pointer;
+}
