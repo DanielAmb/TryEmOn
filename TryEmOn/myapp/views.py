@@ -156,7 +156,7 @@ def ai_rater(img):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = models.resnet18(weights=None)
     model.fc = torch.nn.Linear(model.fc.in_features, 2)
-    model.load_state_dict(torch.load(file_path2, weights_only=True))
+    model.load_state_dict(torch.load(file_path2, map_location=torch.device('cpu'), weights_only=True))
     model.to(device)
     model.eval()
 
