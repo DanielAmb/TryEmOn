@@ -142,7 +142,11 @@ def generateRating(img, outfit):
             if not areCompatible(c1, c2): 
                 errors.append((get_colour_name(c1), get_colour_name(c2)))
 
-    return color_names, (str(round(np.mean(complexities)*100, 2)) + " %"), str(getAesthetic(only_colors)), aesthetics, len(errors)
+    comp = round(np.mean(complexities)*100, 2)
+    if(comp > 100):
+        comp = 100
+
+    return color_names, (str(comp) + " %"), str(getAesthetic(only_colors)), aesthetics, len(errors)
 
 def ai_rater(img):
     # Transformation pipeline for the input image
@@ -156,7 +160,7 @@ def ai_rater(img):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = models.resnet18(weights=None)
     model.fc = torch.nn.Linear(model.fc.in_features, 2)
-    model.load_state_dict(torch.load(file_path2, weights_only=True))
+    model.load_state_dict(torch.load(file_path2, map_location=torch.device('cpu'), weights_only=True))
     model.to(device)
     model.eval()
 
