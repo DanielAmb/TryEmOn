@@ -1,290 +1,134 @@
-{% load static %}
-
-<!-- <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TryEmOn</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
-</head>
-<body>
-    <header class="header">
-        <div class="logo">
-            <a href="#">TryEmOn: Virtual Fashion Booster</a>
-        </div>
-    </header>
-    <h1>Hello, Django!</h1>
-    <p>This is a simple app displaying index.html.</p>
-    <div class="container">
-        <img src="{% static 'images/none.jpg' %}" alt="My Image">
-        <img src="{% static 'images/jacket.png' %}" alt="My Image">
-        <img src="{% static 'images/arrow.jpg' %}" alt="My Image">
-        <img src="{% static 'images/sweater.jpg' %}" alt="My Image">
-    </div>
-    <script src="{% static 'js/scripts.js' %}"></script>
-</body>
-</html> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Upload</title>
-</head>
-<body>
-    <h1>Upload an Image</h1>
-    <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" name="image" id="image" accept="image/*" required>
-        <button type="submit">Upload</button>
-    </form>
-    <div id="uploadedImage">
-        <h2>Uploaded Image:</h2>
-        <img id="displayImage" src="" alt="Uploaded Image" style="max-width: 300px;">
-        <p id="uploadTime"></p>
-        <h3>Detected Items:</h3>
-        <ul id="classNames"></ul>
-        <h3>Detected Colors:</h3>
-        <ul id="colorNames"></ul>
-    </div>
-
-    <script>
-        document.getElementById('uploadForm').onsubmit = async function(event) {
-            event.preventDefault();
-            const formData = new FormData();
-            formData.append('image', document.getElementById('image').files[0]);
-
-            const response = await fetch('/myapp/upload/', {
-                method: 'POST',
-                body: formData
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                console.log(data);
-                document.getElementById('displayImage').src = data.image;
-                document.getElementById('uploadTime').innerText = `Uploaded at: ${new Date(data.uploaded_at).toLocaleString()}`;
-                const classNamesList = document.getElementById('classNames');
-                classNamesList.innerHTML = "";
-                data.class_names.forEach(className => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = className;
-                    classNamesList.appendChild(listItem);
-                });
-                const colorNamesList = document.getElementById('colorNames');
-                colorNamesList.innerHTML = "";
-                data.color_names.forEach(colorNames => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = colorNames;
-                    colorNamesList.appendChild(listItem);
-                });
-
-                document.getElementById('uploadedImage').style.display = 'block';
-            } else {
-                alert('Image upload failed or No clothing items detected');
-            }
-        };
-    </script>
-</body>
-</html> -->
-
-
-<!-- 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TryEmOn</title>
-</head>
-<body>
-    <header class="header">
-        <div class="logo">
-            <h1>TryEmOn: Virtual Fashion Booster</h1>
-        </div>
-    </header>
-    <h1>Upload an Image</h1>
-    <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" name="image" id="image" accept="image/*" required>
-        <button type="submit">Upload</button>
-    </form>
-    <div id="uploadedImage" style="display: none;">
-        <h2>Uploaded Image:</h2>
-        <img id="displayImage" src="" alt="Uploaded Image" style="max-width: 300px;">
-        <p id="uploadTime"></p>
-        <h3>Detected Items:</h3>
-        <ul id="classNames"></ul>
-        <h3>Detected Colors:</h3>
-        <ul id="colorNames"></ul>
-        <h3>AI Rating:</h3>
-        <p id="aiRating"></p>
-        <h3>Overall Aesthetic:</h3>
-        <p id="overallAesthetic"></p>
-        <h3>Overall Complexity:</h3>
-        <p id="overallComplexity"></p>
-        <h3>Confidence Level:</h3>
-        <p id="confidenceLevel"></p>
-        <h3>Aesthetic Details:</h3>
-        <ul id="aestheticDetails"></ul>
-        <h3>Color Theory Errors:</h3>
-        <p id="colorTheoryErrors"></p>
-    </div>
-
-    <script>
-        document.getElementById('uploadForm').onsubmit = async function(event) {
-            event.preventDefault();
-            const formData = new FormData();
-            formData.append('image', document.getElementById('image').files[0]);
-
-            const response = await fetch('/myapp/upload/', {
-                method: 'POST',
-                body: formData
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                console.log(data);
-
-                // Display the image
-                document.getElementById('displayImage').src = data.image;
-                document.getElementById('uploadTime').innerText = `Uploaded at: ${new Date(data.uploaded_at).toLocaleString()}`;
-
-                // Display detected items
-                const classNamesList = document.getElementById('classNames');
-                classNamesList.innerHTML = "";
-                data.class_names.forEach(className => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = className;
-                    classNamesList.appendChild(listItem);
-                });
-
-                // Display detected colors
-                const colorNamesList = document.getElementById('colorNames');
-                colorNamesList.innerHTML = "";
-                data.color_names.forEach(colorName => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = colorName;
-                    colorNamesList.appendChild(listItem);
-                });
-
-                // Display AI rating and other details
-                document.getElementById('aiRating').textContent = data.ai_rating;
-                document.getElementById('overallAesthetic').textContent = data.OverallAesthetic;
-                document.getElementById('overallComplexity').textContent = data.OverallComplexity;
-                document.getElementById('confidenceLevel').textContent = `${data.confidence.toFixed(2)}%`;
-                document.getElementById('colorTheoryErrors').textContent = data.ColorTheoryErrors;
-
-                // Display Aesthetic Details
-                const aestheticDetailsList = document.getElementById('aestheticDetails');
-                aestheticDetailsList.innerHTML = "";
-                data.Aesthetics.forEach((detail, index) => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = `Detail ${index + 1}: ${JSON.stringify(detail)}`;
-                    aestheticDetailsList.appendChild(listItem);
-                });
-
-                document.getElementById('uploadedImage').style.display = 'block';
-            } else {
-                alert('Image upload failed or No clothing items detected');
-            }
-        };
-    </script>
+    <title>TryEmOn: Virtual Fashion Booster</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        .logo h1 {
-            position:absolute;
-            top: 10px;
-            left: 20px;
-            font-size: 2.5em;
-            color: #012169;
-        }
-    </style>
-</body>
-</html> -->
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Upload</title>
-    <style>
+        /* General Styles */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
         }
-        .header {
+        header {
             background-color: #333;
-            color: #fff;
-            padding: 15px 20px;
+            color: white;
+            padding: 15px;
             text-align: center;
         }
-        .header .logo h1 {
+        header h1 {
             margin: 0;
-            font-size: 1.8em;
+            font-size: 1.8rem;
         }
-        #uploadForm {
-            margin: 20px;
+
+        /* Drag-and-Drop Section */
+        .upload-section {
+            text-align: center;
+            padding: 20px;
         }
-        #uploadedImage {
-            display: flex;
-            gap: 20px; /* Adds space between the image and details */
-            margin: 20px;
+        .drop-area {
+            border: 2px dashed #007bff;
+            border-radius: 10px;
+            padding: 40px;
+            background-color: #f3f3f3;
+            cursor: pointer;
+            margin-bottom: 20px;
         }
-        #uploadedImage img {
-            max-width: 400px;
-            height: auto;
-            /* border: 2px solid; */
+        .drop-area:hover {
+            background-color: #e7f1ff;
+        }
+        .drop-area p {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #555;
+        }
+        .upload-section input[type="file"] {
+            display: none;
+        }
+        .upload-section button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
             border-radius: 5px;
-            object-fit: contain;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .upload-section button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Uploaded Image and Details */
+        .result-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            gap: 20px;
+        }
+        .result-section img {
+            max-width: 400px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .details {
-            flex: 1; /* Allows the details section to adjust based on available space */
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 90%;
+            max-width: 600px;
         }
         .details h3 {
-            margin: 10px 0 5px;
-            font-size: 1.1em;
+            font-size: 1.2rem;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
         }
-        .details p,
+        .details p, .details ul {
+            margin: 5px 0;
+        }
         .details ul {
-            margin: 5px 0 15px;
-            font-size: 0.95em;
-        }
-        ul {
             padding-left: 20px;
+        }
+        .details ul li {
+            margin: 5px 0;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
-    <!-- Header Section -->
-    <header class="header">
-        <div class="logo">
-            <h1>TryEmOn: Virtual Fashion Booster</h1>
-        </div>
+    <!-- Header -->
+    <header>
+        <h1>TryEmOn: Virtual Fashion Booster</h1>
     </header>
 
-    <!-- Main Content -->
-    <h1>Upload an Image</h1>
-    <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" name="image" id="image" accept="image/*" required>
-        <button type="submit">Upload</button>
-    </form>
-    <div id="uploadedImage" style="display: none;">
+    <!-- Upload Section -->
+    <div class="upload-section">
+        <h2>Upload an Image</h2>
+        <div class="drop-area" id="drop-area">
+            <p>Drag and drop an image here, or click to upload</p>
+        </div>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" name="image" id="image" accept="image/*" required>
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+
+    <!-- Uploaded Image and Details -->
+    <div class="result-section" style="display: none;" id="uploadedImage">
         <img id="displayImage" src="" alt="Uploaded Image">
         <div class="details">
             <p id="uploadTime"></p>
@@ -307,11 +151,41 @@
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer>
+        &copy; 2024 TryEmOn | All Rights Reserved
+    </footer>
+
     <script>
+        // Drag and Drop Functionality
+        const dropArea = document.getElementById('drop-area');
+        const fileInput = document.getElementById('image');
+
+        dropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropArea.style.backgroundColor = '#e7f1ff';
+        });
+
+        dropArea.addEventListener('dragleave', () => {
+            dropArea.style.backgroundColor = '#f3f3f3';
+        });
+
+        dropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropArea.style.backgroundColor = '#f3f3f3';
+            const files = e.dataTransfer.files;
+            fileInput.files = files; // Set files to the input
+        });
+
+        dropArea.addEventListener('click', () => {
+            fileInput.click(); // Trigger input click on div click
+        });
+
+        // Upload Form Submission
         document.getElementById('uploadForm').onsubmit = async function(event) {
             event.preventDefault();
             const formData = new FormData();
-            formData.append('image', document.getElementById('image').files[0]);
+            formData.append('image', fileInput.files[0]);
 
             const response = await fetch('/myapp/upload/', {
                 method: 'POST',
@@ -328,61 +202,35 @@
 
                 // Display detected items
                 const classNamesList = document.getElementById('classNames');
-                classNamesList.innerHTML = "";
-                data.class_names.forEach(className => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = className;
-                    classNamesList.appendChild(listItem);
-                });
+                classNamesList.innerHTML = data.class_names.map(item => `<li>${item}</li>`).join('');
 
                 // Display detected colors
                 const colorNamesList = document.getElementById('colorNames');
-                colorNamesList.innerHTML = "";
-                data.color_names.forEach(colorName => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = colorName;
-                    colorNamesList.appendChild(listItem);
-                });
+                colorNamesList.innerHTML = data.color_names.map(color => `<li>${color}</li>`).join('');
 
-                // Display AI rating and other details
+                // AI rating
                 document.getElementById('aiRating').textContent = data.ai_rating;
                 document.getElementById('overallAesthetic').textContent = data.OverallAesthetic;
                 document.getElementById('overallComplexity').textContent = data.OverallComplexity;
                 document.getElementById('confidenceLevel').textContent = `${data.confidence.toFixed(2)}%`;
-                document.getElementById('colorTheoryErrors').textContent = data.ColorTheoryErrors;
 
-                // Display Aesthetic Details
+                // Aesthetic details
                 const aestheticDetailsList = document.getElementById('aestheticDetails');
-                aestheticDetailsList.innerHTML = "";
+                aestheticDetailsList.innerHTML = data.Aesthetics.map((detail, index) => {
+                    const [b, g, r] = detail[0];
+                    const rgb = `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
+                    return `<li>Aesthetic ${index + 1}: ${rgb}, Gloomy: ${detail[1]}, Neutral: ${detail[2]}, Vibrant: ${detail[3]}</li>`;
+                }).join('');
 
-                data.Aesthetics.forEach((detail, index) => {
-                    const listItem = document.createElement('li');
-                    
-                    // Convert BGR to RGB
-                    const bgrColor = detail[0];
-                    const rgbColor = `rgb(${Math.round(bgrColor[2])}, ${Math.round(bgrColor[1])}, ${Math.round(bgrColor[0])})`;
-
-                    // Format the attributes for better understanding
-                    const isGloomy = detail[1] ? "Yes" : "No";
-                    const isNeutral = detail[2] ? "Yes" : "No";
-                    const isVibrant = detail[3] ? "Yes" : "No";
-
-                    listItem.innerHTML = `
-                        <strong>Aesthetic ${index + 1}:</strong><br>
-                        <span><strong>Color:</strong> ${rgbColor}</span><br>
-                        <span><strong>Gloomy:</strong> ${isGloomy}</span><br>
-                        <span><strong>Neutral:</strong> ${isNeutral}</span><br>
-                        <span><strong>Vibrant:</strong> ${isVibrant}</span>
-                    `;
-
-                    aestheticDetailsList.appendChild(listItem);
-                });
+                // Color theory errors
+                document.getElementById('colorTheoryErrors').textContent= data.ColorTheoryErrors;
 
                 document.getElementById('uploadedImage').style.display = 'flex';
             } else {
-                alert('Image upload failed or No clothing items detected');
+                alert('Image upload failed or no clothing items detected');
             }
         };
     </script>
 </body>
 </html>
+
