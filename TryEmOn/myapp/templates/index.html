@@ -136,18 +136,18 @@
             <ul id="classNames"></ul>
             <h3>Detected Colors:</h3>
             <ul id="colorNames"></ul>
-            <h3>AI Rating:</h3>
-            <p id="aiRating"></p>
             <h3>Overall Aesthetic:</h3>
             <p id="overallAesthetic"></p>
-            <h3>Overall Complexity:</h3>
-            <p id="overallComplexity"></p>
-            <h3>Confidence Level:</h3>
-            <p id="confidenceLevel"></p>
             <h3>Aesthetic Details:</h3>
             <ul id="aestheticDetails"></ul>
+            <h3>Overall Complexity:</h3>
+            <p id="overallComplexity"></p>
             <h3>Color Theory Errors:</h3>
             <p id="colorTheoryErrors"></p>
+            <h3>AI Rating:</h3>
+            <p id="aiRating"></p>
+            <h3>Confidence Level:</h3>
+            <p id="confidenceLevel"></p>
         </div>
     </div>
 
@@ -219,7 +219,7 @@
                 aestheticDetailsList.innerHTML = data.Aesthetics.map((detail, index) => {
                     const [b, g, r] = detail[0];
                     const rgb = `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
-                    return `<li>Aesthetic ${index + 1}: ${rgb}, Gloomy: ${detail[1]}, Neutral: ${detail[2]}, Vibrant: ${detail[3]}</li>`;
+                    return `<li>Aesthetic ${index + 1}: Gloomy: ${detail[1]}, Neutral: ${detail[2]}, Vibrant: ${detail[3]}</li>`;
                 }).join('');
 
                 // Color theory errors
