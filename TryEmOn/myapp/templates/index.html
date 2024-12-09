@@ -212,7 +212,7 @@
                 document.getElementById('aiRating').textContent = data.ai_rating;
                 document.getElementById('overallAesthetic').textContent = data.OverallAesthetic;
                 document.getElementById('overallComplexity').textContent = data.OverallComplexity;
-                document.getElementById('confidenceLevel').textContent = `${data.confidence.toFixed(2)}%`;
+                document.getElementById('confidenceLevel').textContent = data.confidence;
 
                 // Aesthetic details
                 const aestheticDetailsList = document.getElementById('aestheticDetails');

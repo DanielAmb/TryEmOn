@@ -180,10 +180,22 @@ def ai_rater(img):
             probabilities = F.softmax(outputs, dim=1)
             confidence, predicted = torch.max(probabilities, 1)
 
-        rating = "Bad" if predicted.item() == 0 else "Good"
-        confidence_percentage = confidence.item() * 90
+        rating = "Do Better" if predicted.item() == 0 else "Good"
+        confidence_percentage = confidence.item() * 100
+        if(confidence_percentage > 95):
+            conf = 'Extremely Confident'
+        elif(confidence_percentage <= 95 and confidence_percentage > 90):
+            conf = 'Very Confident'
+        elif(confidence_percentage <= 90 and confidence_percentage > 80):
+            conf = 'Fairly Confident'
+        elif(confidence_percentage <= 80 and confidence_percentage > 70):
+            conf = 'Relatively Confident'
+        elif(confidence_percentage <= 70 and confidence_percentage > 50):
+            conf = 'meh Confident'
 
-        return rating, confidence_percentage
+
+
+        return rating, conf
 
     # Test the function
     # predicted_rating, confidence = predict_rating(img)
