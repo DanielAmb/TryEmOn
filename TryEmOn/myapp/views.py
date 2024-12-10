@@ -18,8 +18,11 @@ from torchvision import transforms, models
 from PIL import Image
 
 
+# Paths to AI models
 file_path = os.path.join('.', 'media', 'clothing_finder.pt')
 file_path2 = os.path.join('.', 'media', 'fit_classifier128.pt')
+
+# Class names for object detection
 names = ["short-sleeve shirt", "long-sleeve shirt", "short-sleeveoutwear", "long-sleeveoutwear", "pair of shorts", "pair of pants", "skirt", "hat", "shoe"]
 model = YOLO(file_path) 
 have_a_model = True
@@ -29,16 +32,18 @@ TEXT_COLOR = (255, 255, 255) # White
 class ImageUploadView(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs): 
         serializer = ImageSerializer(data=request.data)
         if serializer.is_valid():
-
+            # Read the uploaded image file
             image_file = request.FILES['image']
             image_array = np.fromstring(image_file.read(), np.uint8)
             img = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
             
+            # Rate image
             boxed_img, class_names, color_names, complexity, aesthetic, aesthetics, errors, rating, confidence = rate_my_fit(img)
 
+            # Encode and save
             success, buffer = cv2.imencode('.jpg', boxed_img)
             if not success:
                 return Response({"error": "Image processing failed"}, status=400)
@@ -46,6 +51,7 @@ class ImageUploadView(APIView):
             
             serializer.save(image=new_image_file)
 
+            # Prepare JSON response data
             response_data = serializer.data
             response_data['class_names'] = class_names
             response_data['color_names'] = color_names
@@ -56,10 +62,10 @@ class ImageUploadView(APIView):
             response_data['ai_rating'] = rating
             response_data['confidence'] = confidence
 
-            return Response(response_data, status=201)
-        return Response(serializer.errors, status=400)
+            return Response(response_data, status=201) # Return the JSON response with a success status
+        return Response(serializer.errors, status=400) # Return validation errors
     
-
+# Rates user outfit
 def rate_my_fit(img):
     outfit = []
     class_names = []
@@ -89,10 +95,10 @@ def rate_my_fit(img):
     
     for class_name, bbox in outfit:
         img = visualize_bbox(img, bbox, class_name)
-    # os.remove(filepath)
+
     return img, class_names, color_names, complexity, aesthetic, aesthetics, errors, rating, confidence
 
-
+# Color Theory analysis
 def generateRating(img, outfit):
     main_colors = []
     only_colors = []
@@ -135,6 +141,7 @@ def generateRating(img, outfit):
 
     return color_names, (str(comp) + " %"), str(getAesthetic(only_colors)), aesthetics, len(errors)
 
+# Generates an AI rating and the ratings confidence
 def ai_rater(img):
     # Transformation pipeline for the input image
     transform = transforms.Compose([
@@ -163,6 +170,7 @@ def ai_rater(img):
             probabilities = F.softmax(outputs, dim=1)
             confidence, predicted = torch.max(probabilities, 1)
 
+        # 0 == Bad, 1 == Good
         rating = "Do Better" if predicted.item() == 0 else "Good"
         confidence_percentage = confidence.item() * 100
 
@@ -235,6 +243,7 @@ def isBright(color, tolerance=60):
     h,s,v = bgr_to_hsv(color)
     return (v >= tolerance)
 
+# Returns the overall aesthetic of all of the clothing items found
 def getAesthetic(colors, tolerance=0.5):
     aesthetics = [0, 0] #vibrant or gloomy
     for c in colors:
@@ -270,7 +279,7 @@ def areTheSame(c1, c2, tolerance=20):
     
     return (delta_e_value * 100) < tolerance
 
-#return True if colors go well together based on color theory
+#return True if colors go well together based on color theory/color complements
 def areCompatible(c1, c2):
     if areTheSame((255, 0, 0), c1, 40):
         if areTheSame((255, 0, 0), c2, 40): return True
@@ -309,6 +318,7 @@ def get_colors(img):
 
     return colors
 
+# Adds green boxes around the clothing items found
 def visualize_bbox(img, bbox, class_name, color=BOX_COLOR, thickness=2):
     img = copy.deepcopy(img)
     x_center, y_center, w, h = bbox
@@ -349,6 +359,7 @@ def cropToBbox(img, bbox):
     crop_img = img[y_min:y_max, x_min:x_max]
     return crop_img
 
+# More edges in outfit means higher complexity, and vice versa
 def get_complexity(img):
     edges = Canny(img,50,150,apertureSize = 3)
     w, h = edges.shape
