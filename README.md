@@ -1,7 +1,7 @@
 # TryEmOn
-The primary goal of TryEmOn is to create an interactive web application that allows users, including male and female, to visualize outfits before purchasing them online. By leveraging AI, the platform helps users feel more confident in their fashion choices. The need for this project arises from a common challenge: many online shoppers are hesitant to make clothing purchases without first seeing how the items would look on them. TryEmOn aims to solve this by offering virtual "try-ons" for outfits using avatars.
+The primary goal of TryEmOn is to create an interactive web application that provides personalized insights for users, regardless of gender, to help them make informed decisions about their outfits. By leveraging AI and color theory, the platform helps users feel more confident in their fashion choices. The need for this project arises from a common challenge: many individuals struggle to find outfits that complement their personal style, body shape, and color preferences. Often, people make fashion choices based on guesswork, which can result in unflattering combinations or a lack of confidence in their appearance.
 
-TryEmOn will be a Django-based web app that allows users to create personalized avatars and virtually try on clothing items scraped from online retailers like Saks Fifth Avenue and Depop. The system will use a TensorFlow-powered AI confidence rating to assess and provide feedback on how well outfits suit users’ body shapes and styles.
+TryEmOn is a Django-based web app that allows users to receive instant ratings and feedback on their outfits. The system uses a PyTorch-powered AI confidence rating and a color theory analysis to assess and provide feedback on how well the outfits suit the users and their styles.
 
 
 ### Procedure to Run our Project:
