@@ -12,4 +12,5 @@ cd TryEmOn/TryEmOn <br/>
 Run Server: python manage.py runserver <br/>
 End Server: ctrl+c <br/>
 
-
+Remove background for greater accuracy <br/>
+https://www.remove.bg/
