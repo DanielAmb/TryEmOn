@@ -123,7 +123,7 @@ with torch.no_grad():
 val_acc = 100 * val_correct / val_total
 print(f"Validation Accuracy: {val_acc:.2f}%")
 
-torch.save(model.state_dict(), 'fit_classifier128.pt')
+torch.save(model.state_dict(), 'fit_classifier.pt')
 print("Model saved to 'fit_classifier.pt'")
 
 ###################################################################################### Test Confidence

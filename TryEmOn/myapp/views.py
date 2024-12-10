@@ -3,25 +3,16 @@ from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from .serializers import ImageSerializer
 from django.core.files.base import ContentFile
+
 import numpy as np
 import cv2
-from io import BytesIO
 from ultralytics import YOLO
 import os
-from cv2 import imshow, waitKey, rectangle, putText, getTextSize, FONT_HERSHEY_SIMPLEX, LINE_AA, Canny
+from cv2 import rectangle, putText, getTextSize, FONT_HERSHEY_SIMPLEX, LINE_AA, Canny
 import copy
-from colormath.color_objects import sRGBColor, LabColor
-from colormath.color_conversions import convert_color
-from colormath.color_diff import delta_e_cie2000
-import colorspacious as cs
-import requests, json
 from sklearn.cluster import KMeans
 import math
-
-from scipy.spatial import KDTree
 import webcolors
-import matplotlib.pyplot as plt
-
 import torch
 from torchvision import transforms, models
 from PIL import Image
@@ -94,13 +85,12 @@ def rate_my_fit(img):
         print('Error: No Model Detected.')
         exit()
 
-    color_names, complexity, aesthetic, aesthetics, errors = generateRating(img, outfit) #######################################
+    color_names, complexity, aesthetic, aesthetics, errors = generateRating(img, outfit)
     
     for class_name, bbox in outfit:
         img = visualize_bbox(img, bbox, class_name)
     # os.remove(filepath)
     return img, class_names, color_names, complexity, aesthetic, aesthetics, errors, rating, confidence
-
 
 
 def generateRating(img, outfit):
@@ -165,12 +155,8 @@ def ai_rater(img):
 
     def predict_rating(img):
         image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
-
-        # Convert NumPy array to PIL Image
-        image = Image.fromarray(image)
-
-        # Apply the transformation pipeline
-        image = transform(image).unsqueeze(0).to(device)
+        image = Image.fromarray(image) # Convert NumPy array to PIL Image
+        image = transform(image).unsqueeze(0).to(device) # Apply the transformation pipeline
 
         with torch.no_grad():
             outputs = model(image)
@@ -179,6 +165,8 @@ def ai_rater(img):
 
         rating = "Do Better" if predicted.item() == 0 else "Good"
         confidence_percentage = confidence.item() * 100
+
+        # Confidence Rating Buffer
         if(confidence_percentage > 95):
             conf = 'Extremely Confident'
         elif(confidence_percentage <= 95 and confidence_percentage > 90):
@@ -190,13 +178,8 @@ def ai_rater(img):
         elif(confidence_percentage <= 70 and confidence_percentage > 50):
             conf = 'meh Confident'
 
-
-
         return rating, conf
 
-    # Test the function
-    # predicted_rating, confidence = predict_rating(img)
-    # print(f"Predicted Fit: {predicted_rating} with Confidence: {confidence:.2f}%")
     return predict_rating(img)
 
 
