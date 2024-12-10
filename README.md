@@ -5,10 +5,10 @@ TryEmOn will be a Django-based web app that allows users to create personalized 
 
 
 ### Procedure to Run our Project:
-git clone https://github.com/DanielAmb/TryEmOn.git
-cd TryEmOn/TryEmOn
-Run Server: python manage.py runserver
-End Server: ctrl+c
+git clone https://github.com/DanielAmb/TryEmOn.git <br/>
+cd TryEmOn/TryEmOn <br/>
+Run Server: python manage.py runserver <br/>
+End Server: ctrl+c <br/>
 
 
 
