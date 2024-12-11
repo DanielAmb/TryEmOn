@@ -70,6 +70,10 @@
             padding: 20px;
             gap: 20px;
         }
+        .image-container {
+            display: flex;
+            justify-content: space-between; 
+        }
         .result-section img {
             max-width: 400px;
             border-radius: 10px;
@@ -110,12 +114,10 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
         <h1>TryEmOn: Virtual Fashion Booster</h1>
     </header>
 
-    <!-- Upload Section -->
     <div class="upload-section">
         <h2>Upload an Image</h2>
         <div class="drop-area" id="drop-area">
@@ -127,9 +129,11 @@
         </form>
     </div>
 
-    <!-- Uploaded Image and Details -->
     <div class="result-section" style="display: none;" id="uploadedImage">
-        <img id="displayImage" src="" alt="Uploaded Image">
+        <div class="image-container">
+            <img id="originalImage" src="" alt="Original Image">
+            <img id="overlayImage" src="" alt="Overlayed Image"> 
+        </div>
         <div class="details">
             <p id="uploadTime"></p>
             <h3>Detected Items:</h3>
@@ -151,7 +155,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <footer>
         &copy; 2024 TryEmOn | All Rights Reserved
     </footer>
@@ -196,19 +199,16 @@
                 const data = await response.json();
                 console.log(data);
 
-                // Display the image
-                document.getElementById('displayImage').src = data.image;
-                document.getElementById('uploadTime').innerText = `Uploaded at: ${new Date(data.uploaded_at).toLocaleString()}`;
+                // Display the images
+                document.getElementById('originalImage').src = data.image; 
+                document.getElementById('overlayImage').src = data.overlay_image_url; 
 
-                // Display detected items
+                // Display the rest of the information 
+                document.getElementById('uploadTime').innerText = `Uploaded at: ${new Date(data.uploaded_at).toLocaleString()}`;
                 const classNamesList = document.getElementById('classNames');
                 classNamesList.innerHTML = data.class_names.map(item => `<li>${item}</li>`).join('');
-
-                // Display detected colors
                 const colorNamesList = document.getElementById('colorNames');
                 colorNamesList.innerHTML = data.color_names.map(color => `<li>${color}</li>`).join('');
-
-                // AI rating
                 document.getElementById('aiRating').textContent = data.ai_rating;
                 document.getElementById('overallAesthetic').textContent = data.OverallAesthetic;
                 document.getElementById('overallComplexity').textContent = data.OverallComplexity;
@@ -220,17 +220,4 @@
                     const [b, g, r] = detail[0];
                     const rgb = `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
                     return `<li>Aesthetic ${index + 1}: Gloomy: ${detail[1]}, Neutral: ${detail[2]}, Vibrant: ${detail[3]}</li>`;
-                }).join('');
-
-                // Color theory errors
-                document.getElementById('colorTheoryErrors').textContent= data.ColorTheoryErrors;
-
-                document.getElementById('uploadedImage').style.display = 'flex';
-            } else {
-                alert('Image upload failed or no clothing items detected');
-            }
-        };
-    </script>
-</body>
-</html>
-
+                }).join
