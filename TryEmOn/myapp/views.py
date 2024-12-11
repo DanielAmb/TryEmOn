@@ -313,6 +313,15 @@ def get_colors(img):
 
     return colors
 
+import copy
+import cv2
+import numpy as np
+from cv2 import rectangle, putText, FONT_HERSHEY_SIMPLEX, LINE_AA, getTextSize, Canny
+
+# Constants for visualization
+BOX_COLOR = (0, 255, 0)
+TEXT_COLOR = (255, 255, 255)
+
 def visualize_bbox(img, bbox, class_name, color=BOX_COLOR, thickness=2):
     img = copy.deepcopy(img)
     x_center, y_center, w, h = bbox
@@ -321,12 +330,14 @@ def visualize_bbox(img, bbox, class_name, color=BOX_COLOR, thickness=2):
     h *= height
     x_center *= width
     y_center *= height
-    x_min = x_center - w/2
-    y_min = y_center - h/2
+    x_min = x_center - w / 2
+    y_min = y_center - h / 2
     x_min, x_max, y_min, y_max = int(x_min), int(x_min + w), int(y_min), int(y_min + h)
-   
+    
+    # Draw the bounding box
     rectangle(img, (x_min, y_min), (x_max, y_max), color=color, thickness=thickness)
     
+    # Draw the label
     ((text_width, text_height), _) = getTextSize(class_name, FONT_HERSHEY_SIMPLEX, 0.5, 1)    
     rectangle(img, (x_min, y_min - int(1.3 * text_height)), (x_min + text_width, y_min), BOX_COLOR, -1)
     putText(
@@ -347,18 +358,46 @@ def cropToBbox(img, bbox):
     h *= height
     x_center *= width
     y_center *= height
-    x_min = x_center - w/2
-    y_min = y_center - h/2
+    x_min = x_center - w / 2
+    y_min = y_center - h / 2
     x_min, x_max, y_min, y_max = int(x_min), int(x_min + w), int(y_min), int(y_min + h)
     crop_img = img[y_min:y_max, x_min:x_max]
     return crop_img
 
-def get_complexity(img):
-    edges = Canny(img,50,150,apertureSize = 3)
-    w, h = edges.shape
-    return 7*np.sum(edges)/(w*h*255)
+def overlay_image_on_bbox(img, bbox, overlay_img, alpha=0.5):
+    """
+    Overlay an article of clothing on the bounding box of the image.
+    """
+    x_center, y_center, w, h = bbox
+    height, width, colors = img.shape
+    w *= width
+    h *= height
+    x_center *= width
+    y_center *= height
+    x_min = int(x_center - w / 2)
+    y_min = int(y_center - h / 2)
+    x_max = int(x_min + w)
+    y_max = int(y_min + h)
 
-    
+    # Resize the overlay image to match the bounding box dimensions
+    overlay_img_resized = cv2.resize(overlay_img, (x_max - x_min, y_max - y_min))
+
+    # Extract the region of interest from the original image
+    roi = img[y_min:y_max, x_min:x_max]
+
+    # Blend the overlay image with the region of interest
+    blended = cv2.addWeighted(roi, 1 - alpha, overlay_img_resized, alpha, 0)
+
+    # Place the blended result back into the original image
+    img[y_min:y_max, x_min:x_max] = blended
+    return img
+
+def get_complexity(img):
+    edges = Canny(img, 50, 150, apertureSize=3)
+    w, h = edges.shape
+    return 7 * np.sum(edges) / (w * h * 255)
+
+# Django view for rendering the page
 from django.shortcuts import render
 
 def index(request):
